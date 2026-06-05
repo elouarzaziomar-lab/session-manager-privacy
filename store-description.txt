@@ -1,0 +1,46 @@
+── SHORT DESCRIPTION (132 chars) ───────────────────────────────────────────
+
+Save, restore & organize Chrome tab sessions locally. No account. No cloud. No data loss. Ever.
+
+
+── LONG DESCRIPTION ────────────────────────────────────────────────────────
+
+Most tab managers sync to servers you don't control — and users lose everything when that sync fails. Session Manager takes the opposite approach: your tabs stay on your device, always.
+
+─────────────────────────────────────────────────────────
+🔒 PRIVATE BY DESIGN
+─────────────────────────────────────────────────────────
+• No account or sign-in required
+• No external server — ever
+• No analytics, no tracking
+• Only 2 permissions: tabs + storage
+• Your data is yours — export it anytime as JSON
+
+─────────────────────────────────────────────────────────
+⚡ FEATURES
+─────────────────────────────────────────────────────────
+• Save all open tabs in one click under a custom name
+• Restore a session in a new window or your current one
+• Preview the list of tabs in a session before restoring
+• Rename sessions inline — press Enter to confirm
+• Delete sessions you no longer need
+• Export all sessions to a JSON file for backup
+• Import sessions from a JSON file
+• Keyboard shortcut: Alt+S to open the popup instantly
+
+─────────────────────────────────────────────────────────
+🌍 AVAILABLE IN 5 LANGUAGES
+─────────────────────────────────────────────────────────
+English, French, Spanish, German, Portuguese.
+The interface automatically matches your browser language.
+
+─────────────────────────────────────────────────────────
+💡 WHY CHOOSE SESSION MANAGER?
+─────────────────────────────────────────────────────────
+Other extensions have trained users to expect data loss:
+cloud syncs that randomly wipe sessions, reinstalls that
+delete everything, mandatory accounts just to save tabs.
+
+Session Manager was built with a simple guarantee:
+if it's saved, it stays saved — because nothing leaves
+your device in the first place.

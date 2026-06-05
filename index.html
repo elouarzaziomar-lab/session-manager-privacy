@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session Manager — Save & Restore Chrome Tabs. Locally.</title>
+  <meta name="description" content="Save and restore your Chrome tab sessions in one click. No account, no cloud, no tracking. Everything stays on your device." />
+  <meta property="og:title" content="Session Manager — Save Chrome Tabs Locally" />
+  <meta property="og:description" content="No account. No cloud. No data loss. Just your tabs, saved and restored instantly." />
+  <meta property="og:image" content="promo_440x280.png" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f1a;
+      --surface:  #1e1e2e;
+      --card:     #313244;
+      --border:   #45475a;
+      --accent:   #cba6f7;
+      --accent2:  #b47ef7;
+      --text:     #cdd6f4;
+      --subtext:  #a6adc8;
+      --muted:    #6c7086;
+      --green:    #a6e3a1;
+      --red:      #f38ba8;
+      --blue:     #89b4fa;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,15,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: 15px; color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--subtext); text-decoration: none; font-size: 13px; transition: color .15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #1e1e2e;
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; text-decoration: none;
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--accent2); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 860px; margin: 0 auto;
+      padding: 96px 24px 80px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(203,166,247,0.1); border: 1px solid rgba(203,166,247,0.25);
+      color: var(--accent); border-radius: 999px;
+      padding: 5px 14px; font-size: 12px; font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 18px; color: var(--subtext);
+      max-width: 560px; margin: 0 auto 36px;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: #1e1e2e;
+      padding: 13px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 600; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: background .15s, transform .1s;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--card); color: var(--text);
+      padding: 13px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 500; text-decoration: none;
+      border: 1px solid var(--border);
+      transition: background .15s;
+    }
+    .btn-secondary:hover { background: var(--border); }
+
+    /* Trust line */
+    .trust-line {
+      margin-top: 48px;
+      display: flex; gap: 28px; justify-content: center; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--muted);
+    }
+    .trust-item .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .dot-green { background: var(--green); }
+    .dot-blue  { background: var(--blue); }
+    .dot-accent { background: var(--accent); }
+
+    /* ── VS SECTION ── */
+    .section { max-width: 960px; margin: 0 auto; padding: 80px 24px; }
+    .section-label {
+      text-align: center;
+      font-size: 12px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .section h2 {
+      text-align: center; font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700; margin-bottom: 48px;
+    }
+    .section h2 span { color: var(--accent); }
+
+    .vs-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    @media (max-width: 600px) { .vs-grid { grid-template-columns: 1fr; } }
+
+    .vs-card {
+      background: var(--card); border-radius: 12px;
+      padding: 24px; border: 1px solid var(--border);
+    }
+    .vs-card.them { opacity: .7; }
+    .vs-card-header {
+      font-size: 13px; font-weight: 600; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .tag-us   { color: var(--green); }
+    .tag-them { color: var(--red); }
+    .vs-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px; color: var(--subtext); margin-bottom: 10px;
+    }
+    .vs-row .icon { flex-shrink: 0; margin-top: 1px; }
+    .icon-yes { color: var(--green); }
+    .icon-no  { color: var(--red); }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .feature-card {
+      background: var(--card); border-radius: 12px;
+      padding: 24px; border: 1px solid var(--border);
+      transition: border-color .15s;
+    }
+    .feature-card:hover { border-color: rgba(203,166,247,0.4); }
+    .feature-icon { font-size: 28px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .feature-card p  { font-size: 13px; color: var(--subtext); }
+
+    /* ── PRIVACY HIGHLIGHT ── */
+    .privacy-block {
+      background: linear-gradient(135deg, rgba(203,166,247,0.08), rgba(137,180,250,0.06));
+      border: 1px solid rgba(203,166,247,0.2);
+      border-radius: 16px; padding: 48px 40px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: center;
+    }
+    @media (max-width: 680px) { .privacy-block { grid-template-columns: 1fr; } }
+    .privacy-block h2 { font-size: 28px; font-weight: 700; margin-bottom: 14px; }
+    .privacy-block h2 span { color: var(--accent); }
+    .privacy-block p { color: var(--subtext); font-size: 14px; margin-bottom: 20px; }
+    .privacy-checks { display: flex; flex-direction: column; gap: 10px; }
+    .privacy-check {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: var(--text);
+    }
+    .privacy-check .checkmark {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(166,227,161,0.15);
+      border: 1px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--green); flex-shrink: 0;
+    }
+    .privacy-visual {
+      background: var(--surface); border-radius: 12px;
+      padding: 20px; border: 1px solid var(--border);
+    }
+    .flow-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; margin-bottom: 10px;
+    }
+    .flow-box {
+      background: var(--card); border-radius: 6px;
+      padding: 6px 12px; font-size: 12px; color: var(--subtext);
+      border: 1px solid var(--border); white-space: nowrap;
+    }
+    .flow-box.accent { color: var(--accent); border-color: rgba(203,166,247,0.4); }
+    .flow-arrow { color: var(--muted); font-size: 16px; }
+    .flow-cross {
+      color: var(--red); font-size: 14px;
+      text-decoration: line-through; opacity: .5;
+    }
+
+    /* ── SCREENSHOTS ── */
+    .screenshots-scroll {
+      display: flex; gap: 16px; overflow-x: auto;
+      padding-bottom: 12px; scroll-snap-type: x mandatory;
+    }
+    .screenshots-scroll::-webkit-scrollbar { height: 4px; }
+    .screenshots-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .screenshots-scroll img {
+      width: 480px; flex-shrink: 0;
+      border-radius: 10px; border: 1px solid var(--border);
+      scroll-snap-align: start;
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-block {
+      text-align: center; padding: 80px 24px;
+      max-width: 600px; margin: 0 auto;
+    }
+    .cta-block h2 { font-size: 32px; font-weight: 700; margin-bottom: 14px; }
+    .cta-block p  { color: var(--subtext); margin-bottom: 32px; font-size: 15px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px; text-align: center;
+      font-size: 12px; color: var(--muted);
+      display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--subtext); }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <img src="icon128.png" alt="Session Manager" />
+    Session Manager
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#screenshots">Screenshots</a>
+  </div>
+  <a class="nav-cta" href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">
+    Add to Chrome — Free
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    🔒 No account &nbsp;·&nbsp; No cloud &nbsp;·&nbsp; No tracking
+  </div>
+  <h1>Save your tabs.<br/><span>Nothing leaves your device.</span></h1>
+  <p>
+    Session Manager lets you save, restore, and organize groups of Chrome tabs in one click —
+    entirely on your device. No sign-in, no server, no data loss.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l4-4 4 4M12 8v8"/></svg>
+      Add to Chrome — It's free
+    </a>
+    <a class="btn-secondary" href="#features">See features →</a>
+  </div>
+  <div class="trust-line">
+    <div class="trust-item"><div class="dot dot-green"></div> 100% local storage</div>
+    <div class="trust-item"><div class="dot dot-blue"></div> Open in 1 click</div>
+    <div class="trust-item"><div class="dot dot-accent"></div> 5 languages supported</div>
+    <div class="trust-item"><div class="dot dot-green"></div> No permissions abuse</div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- VS COMPETITORS -->
+<section class="section">
+  <p class="section-label">Why Session Manager</p>
+  <h2>Others lose your tabs.<br/><span>We don't.</span></h2>
+  <div class="vs-grid">
+    <div class="vs-card">
+      <div class="vs-card-header tag-us">✦ Session Manager</div>
+      <div class="vs-row"><span class="icon icon-yes">✓</span> Everything stored locally — zero risk of cloud wipe</div>
+      <div class="vs-row"><span class="icon icon-yes">✓</span> No account, no sign-in, works instantly</div>
+      <div class="vs-row"><span class="icon icon-yes">✓</span> Export to JSON anytime — your data, your backup</div>
+      <div class="vs-row"><span class="icon icon-yes">✓</span> Rename sessions inline, preview tabs before restoring</div>
+      <div class="vs-row"><span class="icon icon-yes">✓</span> Restore in current window or a new one</div>
+      <div class="vs-row"><span class="icon icon-yes">✓</span> Alt+S shortcut — open popup without touching the mouse</div>
+    </div>
+    <div class="vs-card them">
+      <div class="vs-card-header tag-them">✕ Most competitors</div>
+      <div class="vs-row"><span class="icon icon-no">✗</span> Cloud sync that randomly wipes your sessions</div>
+      <div class="vs-row"><span class="icon icon-no">✗</span> Mandatory account to use basic features</div>
+      <div class="vs-row"><span class="icon icon-no">✗</span> No export — reinstall = lose everything</div>
+      <div class="vs-row"><span class="icon icon-no">✗</span> Bloated UI with dozens of confusing options</div>
+      <div class="vs-row"><span class="icon icon-no">✗</span> Performance issues with large session lists</div>
+      <div class="vs-row"><span class="icon icon-no">✗</span> Abandoned or infrequently updated</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <p class="section-label">Features</p>
+  <h2>Everything you need.<br/><span>Nothing you don't.</span></h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <h3>Save in one click</h3>
+      <p>Name your session and save all open tabs instantly. Chrome URLs are automatically filtered out.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Restore instantly</h3>
+      <p>Reopen a session in a new window or directly in your current one — your choice, every time.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👁</div>
+      <h3>Preview before restoring</h3>
+      <p>Expand any session to see the full list of tabs with favicons before opening anything.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✎</div>
+      <h3>Rename inline</h3>
+      <p>Double-click to rename any session directly in the list. Confirmed with Enter, cancelled with Escape.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📦</div>
+      <h3>Export & Import JSON</h3>
+      <p>Back up all sessions to a JSON file and restore them anytime — even after a full reinstall.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⌨️</div>
+      <h3>Keyboard shortcut</h3>
+      <p>Press <kbd style="background:#313244;border:1px solid #45475a;border-radius:4px;padding:1px 6px;font-size:12px">Alt+S</kbd> to open the popup without touching your mouse.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- PRIVACY HIGHLIGHT -->
+<section class="section" id="privacy">
+  <div class="privacy-block">
+    <div>
+      <h2>Your tabs stay <span>on your device</span>.<br/>Full stop.</h2>
+      <p>
+        While other extensions sync to servers you don't control,
+        Session Manager uses Chrome's built-in local storage exclusively.
+        Your sessions never travel over the internet.
+      </p>
+      <div class="privacy-checks">
+        <div class="privacy-check"><div class="checkmark">✓</div> No external server involved</div>
+        <div class="privacy-check"><div class="checkmark">✓</div> No analytics or usage tracking</div>
+        <div class="privacy-check"><div class="checkmark">✓</div> No account or email required</div>
+        <div class="privacy-check"><div class="checkmark">✓</div> Only 2 permissions: tabs + storage</div>
+        <div class="privacy-check"><div class="checkmark">✓</div> Open data format — export anytime</div>
+      </div>
+    </div>
+    <div class="privacy-visual">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Data flow</p>
+      <div class="flow-row">
+        <div class="flow-box">Your tabs</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box accent">chrome.storage.local</div>
+      </div>
+      <div class="flow-row" style="margin-left:20px">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-box">Your device only</div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <p style="font-size:11px;color:var(--muted);margin-bottom:8px">What never happens</p>
+        <div class="flow-row">
+          <div class="flow-cross">→ External server</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-cross">→ Google account</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-cross">→ Analytics</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- SCREENSHOTS -->
+<section class="section" id="screenshots">
+  <p class="section-label">Screenshots</p>
+  <h2>Clean. <span>Fast. Focused.</span></h2>
+  <div class="screenshots-scroll">
+    <img src="screenshot_1_empty.png" alt="Empty state" />
+    <img src="screenshot_2_saving.png" alt="Saving a session" />
+    <img src="screenshot_3_list.png" alt="Session list" />
+    <img src="screenshot_4_preview.png" alt="Tab preview" />
+    <img src="screenshot_5_rename.png" alt="Rename inline" />
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CTA FINAL -->
+<div class="cta-block">
+  <h2>Ready to stop losing tabs?</h2>
+  <p>Free. Local. Private. Works in seconds.</p>
+  <a class="btn-primary" style="display:inline-flex" href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">
+    Add to Chrome — It's free
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Session Manager</span>
+  <a href="privacy.html">Privacy Policy</a>
+  <a href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">Chrome Web Store</a>
+</footer>
+
+</body>
+</html>
