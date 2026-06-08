@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toby Alternative — Free, Local & No Account | Session Manager</title>
+  <meta name="description" content="Looking for a Toby alternative? Session Manager saves and restores your browser tabs locally — no account, no cloud, no limits, completely free. Honest 2026 comparison." />
+  <link rel="canonical" href="https://elouarzaziomar-lab.github.io/session-manager-privacy/toby-alternative/" />
+  <meta property="og:title" content="The free, local Toby alternative — Session Manager" />
+  <meta property="og:description" content="No account. No cloud. No caps. Save and restore your tabs, entirely on your device." />
+  <meta property="og:image" content="../promo_440x280.png" />
+  <meta property="og:type" content="article" />
+  <link rel="icon" href="../icon.svg" type="image/svg+xml" />
+
+  <!-- FAQ structured data (helps rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Session Manager a free Toby alternative?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Session Manager is completely free with no paid tier and no caps on the number of sessions or tabs. Toby's free plan is limited (60 cards, 3 collections as of 2026), with paid plans beyond that." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need an account to use Session Manager?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Unlike Toby, Session Manager requires no account and no sign-in. You install it and use it immediately." }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is my data stored?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Entirely on your device, using the browser's built-in chrome.storage.local. Nothing is sent to any server. Toby, by contrast, syncs your collections to its cloud." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I export my sessions?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Session Manager exports all your sessions to a portable JSON file you can back up or re-import anytime, even after a reinstall." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Session Manager work offline?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Because everything is stored locally, it works fully offline. Toby needs an internet connection to load your collections from its cloud." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#0f0f1a; --surface:#1e1e2e; --card:#313244; --border:#45475a;
+      --accent:#cba6f7; --accent2:#b47ef7; --text:#cdd6f4; --subtext:#a6adc8;
+      --muted:#6c7086; --green:#a6e3a1; --red:#f38ba8; --blue:#89b4fa;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+    nav {
+      position:sticky; top:0; z-index:100; background:rgba(15,15,26,0.85);
+      backdrop-filter:blur(12px); border-bottom:1px solid var(--border);
+      padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-brand { display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; color:var(--accent); text-decoration:none; }
+    .nav-brand img { width:28px; height:28px; border-radius:6px; }
+    .nav-cta { background:var(--accent); color:#1e1e2e; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:background .15s; }
+    .nav-cta:hover { background:var(--accent2); }
+
+    .wrap { max-width:820px; margin:0 auto; padding:64px 24px; }
+    .breadcrumb { font-size:12px; color:var(--muted); margin-bottom:24px; }
+    .breadcrumb a { color:var(--muted); text-decoration:none; }
+    .breadcrumb a:hover { color:var(--subtext); }
+
+    .eyebrow { display:inline-flex; align-items:center; gap:6px; background:rgba(203,166,247,0.1); border:1px solid rgba(203,166,247,0.25); color:var(--accent); border-radius:999px; padding:5px 14px; font-size:12px; font-weight:500; margin-bottom:24px; }
+    h1 { font-size:clamp(30px,5vw,46px); font-weight:700; line-height:1.15; margin-bottom:20px; }
+    h1 span { color:var(--accent); }
+    .lead { font-size:17px; color:var(--subtext); margin-bottom:32px; }
+
+    h2 { font-size:24px; font-weight:700; margin:48px 0 16px; }
+    h2 span { color:var(--accent); }
+    p { color:var(--subtext); margin-bottom:16px; }
+    p strong { color:var(--text); }
+
+    .btn-primary { background:var(--accent); color:#1e1e2e; padding:13px 28px; border-radius:10px; font-size:15px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:background .15s, transform .1s; }
+    .btn-primary:hover { background:var(--accent2); transform:translateY(-1px); }
+
+    /* Comparison table */
+    .compare { width:100%; border-collapse:collapse; margin:24px 0; background:var(--card); border-radius:12px; overflow:hidden; font-size:14px; }
+    .compare th, .compare td { padding:13px 16px; text-align:left; border-bottom:1px solid var(--border); }
+    .compare thead th { background:var(--surface); font-size:13px; }
+    .compare thead th:nth-child(2) { color:var(--accent); }
+    .compare tbody td:first-child { color:var(--subtext); }
+    .compare tbody td { color:var(--text); }
+    .yes { color:var(--green); font-weight:600; }
+    .no  { color:var(--red); }
+    .compare tr:last-child td { border-bottom:none; }
+
+    .pick { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+    @media (max-width:600px){ .pick { grid-template-columns:1fr; } }
+    .pick-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:22px; }
+    .pick-card h3 { font-size:15px; margin-bottom:12px; }
+    .pick-card.us h3 { color:var(--green); }
+    .pick-card.them h3 { color:var(--blue); }
+    .pick-card ul { list-style:none; }
+    .pick-card li { font-size:13px; color:var(--subtext); margin-bottom:8px; padding-left:18px; position:relative; }
+    .pick-card li::before { content:"›"; position:absolute; left:0; color:var(--muted); }
+
+    .faq-item { border-bottom:1px solid var(--border); padding:18px 0; }
+    .faq-item h3 { font-size:15px; margin-bottom:6px; color:var(--text); }
+    .faq-item p { font-size:14px; margin:0; }
+
+    .cta-box { text-align:center; background:linear-gradient(135deg,rgba(203,166,247,0.08),rgba(137,180,250,0.06)); border:1px solid rgba(203,166,247,0.2); border-radius:16px; padding:40px 24px; margin:48px 0; }
+    .cta-box h2 { margin-top:0; }
+
+    .disclaimer { font-size:12px; color:var(--muted); font-style:italic; margin-top:32px; }
+
+    footer { border-top:1px solid var(--border); padding:24px; text-align:center; font-size:12px; color:var(--muted); display:flex; justify-content:center; gap:24px; flex-wrap:wrap; }
+    footer a { color:var(--muted); text-decoration:none; }
+    footer a:hover { color:var(--subtext); }
+    .screenshot { width:100%; border-radius:10px; border:1px solid var(--border); margin:16px 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../"><img src="../icon128.png" alt="Session Manager" /> Session Manager</a>
+  <a class="nav-cta" href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">Add to Chrome — Free</a>
+</nav>
+
+<article class="wrap">
+  <p class="breadcrumb"><a href="../">Home</a> › Toby alternative</p>
+
+  <div class="eyebrow">🔒 No account · No cloud · No caps</div>
+  <h1>The lightweight <span>Toby alternative</span> — local, free, no account</h1>
+  <p class="lead">
+    Toby is a powerful visual tab organizer. But it now requires an account, syncs your
+    collections to its cloud, and its free plan is capped. If that's why you're looking to
+    switch, <strong>Session Manager</strong> is the minimal, private, unlimited alternative —
+    it just saves and restores your tabs, entirely on your device.
+  </p>
+  <a class="btn-primary" href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">Add to Chrome — It's free</a>
+
+  <h2>Why people leave Toby</h2>
+  <p>
+    Toby pioneered the visual "boards of tabs" experience, and for teams who live inside it,
+    it's genuinely great. But three recurring frictions push solo users to look elsewhere:
+  </p>
+  <p>
+    <strong>1. The mandatory account.</strong> You sign up before you can really use it.<br/>
+    <strong>2. The cloud.</strong> Your collections live on Toby's servers and need a connection to load.<br/>
+    <strong>3. The free-tier caps.</strong> As of 2026, the free plan is limited to roughly 60 cards,
+    3 collections and 1 workspace; going beyond means a paid subscription.
+  </p>
+  <p>
+    None of those are dealbreakers if you want boards and collaboration. They're dealbreakers
+    if you just want to <em>save a set of tabs and get them back later</em>, privately.
+  </p>
+
+  <h2>Session Manager vs Toby — <span>side by side</span></h2>
+  <table class="compare">
+    <thead>
+      <tr><th>&nbsp;</th><th>Session Manager</th><th>Toby</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Price</td><td class="yes">Free &amp; unlimited</td><td>Free tier capped · paid from ~$4.50/mo</td></tr>
+      <tr><td>Account required</td><td class="yes">No</td><td class="no">Yes</td></tr>
+      <tr><td>Data storage</td><td class="yes">100% local (your device)</td><td>Cloud (Toby servers)</td></tr>
+      <tr><td>Works fully offline</td><td class="yes">Yes</td><td>Needs connection to load</td></tr>
+      <tr><td>Export to JSON</td><td class="yes">Yes</td><td>—</td></tr>
+      <tr><td>Preview tabs before restoring</td><td class="yes">Yes</td><td>Yes</td></tr>
+      <tr><td>Restore in current window</td><td class="yes">Yes</td><td>Opens collection</td></tr>
+      <tr><td>Visual drag-and-drop boards</td><td class="no">No</td><td class="yes">Yes</td></tr>
+      <tr><td>Team collaboration &amp; integrations</td><td class="no">No</td><td class="yes">Yes (paid)</td></tr>
+      <tr><td>Interface languages</td><td class="yes">5</td><td>English</td></tr>
+      <tr><td>Keyboard shortcut</td><td class="yes">Alt+S</td><td>Yes</td></tr>
+    </tbody>
+  </table>
+
+  <img class="screenshot" src="../screenshot_3_list.png" alt="Session Manager session list" />
+
+  <h2>Which one should you pick?</h2>
+  <div class="pick">
+    <div class="pick-card them">
+      <h3>Stick with Toby if…</h3>
+      <ul>
+        <li>You want visual, drag-and-drop boards of tabs</li>
+        <li>You collaborate with a team on shared collections</li>
+        <li>You rely on Slack / Notion integrations</li>
+        <li>Cross-device cloud sync matters more than privacy</li>
+      </ul>
+    </div>
+    <div class="pick-card us">
+      <h3>Switch to Session Manager if…</h3>
+      <ul>
+        <li>You just want to save &amp; restore tab sessions</li>
+        <li>You don't want to create an account</li>
+        <li>You want your data to stay on your device</li>
+        <li>You want it free, unlimited, with no caps</li>
+        <li>You want to own &amp; export your data as JSON</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Frequently asked questions</h2>
+  <div class="faq-item">
+    <h3>Is Session Manager really free?</h3>
+    <p>Yes — completely free, no paid tier, and no cap on the number of sessions or tabs.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Do I need an account?</h3>
+    <p>No. Install it and use it immediately. There's no sign-in of any kind.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Where is my data stored?</h3>
+    <p>Locally, via the browser's <code>chrome.storage.local</code>. Nothing ever leaves your device.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Can I import my data from Toby?</h3>
+    <p>Not directly — Toby doesn't export to a compatible format. Session Manager has its own JSON export/import so you can back up and move <em>your</em> sessions freely.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Does it work offline?</h3>
+    <p>Yes. Because everything is local, it works with no connection at all.</p>
+  </div>
+
+  <div class="cta-box">
+    <h2>Try the private, local Toby alternative</h2>
+    <p>Free. No account. Your tabs never leave your device.</p>
+    <a class="btn-primary" href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">Add to Chrome — It's free</a>
+  </div>
+
+  <p class="disclaimer">
+    Comparison based on publicly available information about Toby as of June 2026.
+    Toby pricing and features may change — check gettoby.com for current details.
+    Session Manager is an independent project and is not affiliated with Toby.
+  </p>
+</article>
+
+<footer>
+  <span>© 2026 Session Manager</span>
+  <a href="../">Home</a>
+  <a href="../privacy.html">Privacy Policy</a>
+  <a href="https://chromewebstore.google.com/detail/session-manager/idocldnhehbcnhplfikdapjiodnohjhd" target="_blank">Chrome Web Store</a>
+</footer>
+
+</body>
+</html>
